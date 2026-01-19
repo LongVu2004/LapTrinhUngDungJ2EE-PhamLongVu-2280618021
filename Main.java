@@ -1,7 +1,10 @@
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -64,20 +67,26 @@ public class Main {
                     list5.forEach(Book::output);
                 }
                 case 6 -> {
-                    Book maxPriceBook = listBooks.stream()
-                            .max((b1, b2) -> Double.compare(b1.getPrice(), b2.getPrice()))
-                            .orElseThrow();
-                    System.out.println("Sách có giá cao nhất:");
-                    maxPriceBook.output();
+                    System.out.println("Sách có giá cao nhất: ");
+                    listBooks.stream()
+                        .sorted((b1, b2) -> Double.compare(b2.getPrice(), b1.getPrice()))
+                        .limit(1)
+                        .forEach(Book::output);
                 }
                 case 7-> {
                     System.out.print("Nhập tên tác giả cần tìm: ");
-                    x.nextLine(); // consume newline
-                    String authorName = x.nextLine();
-                    List<Book> authorBooks = listBooks.stream()
-                            .filter(p -> p.getAuthor().equalsIgnoreCase(authorName))
-                            .toList();
-                    authorBooks.forEach(Book::output);
+                    x.nextLine();
+                    String inputArr = x.nextLine();
+
+                    Set<String> authorSet = Arrays.stream(inputArr.split(","))
+                        .map(p -> p.trim().toLowerCase())
+                        .collect(Collectors.toSet());
+
+                    System.out.println("Kết quả tìm kiếm:");
+    
+                    listBooks.stream()
+                        .filter(p -> authorSet.contains(p.getAuthor().toLowerCase())) 
+                        .forEach(Book::output);
                 }
             }
         } while (chon != 0);
