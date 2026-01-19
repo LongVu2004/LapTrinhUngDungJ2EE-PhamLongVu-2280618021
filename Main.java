@@ -1,0 +1,85 @@
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        List<Book> listBooks = new ArrayList<>();
+        Scanner x = new Scanner(System.in);
+        String msg = """
+                Chương trình quản lý sách
+                1. Thêm 1 cuốn sách
+                2. Xóa 1 cuốn sách
+                3. Thay đổi sách
+                4. Xuất danh sách sách
+                5. Tìm sách lập trình
+                6. Lấy sách tối đa theo giá
+                7. Tìm kiếm theo tác giả
+                0. Thoát
+                =================
+                Chọn chức năng: """;
+
+        int chon = 0;
+        do {
+            System.out.println(msg);
+            chon = x.nextInt();
+            switch (chon) {
+                case 1 -> {
+                    Book newBook = new Book();
+                    newBook.input();
+                    listBooks.add(newBook);
+                }
+                case 2 -> {
+                    System.out.print("Nhập mã sách cần xóa: ");
+                    int bookId = x.nextInt();
+                    Book find = listBooks.stream().filter(p -> p.getId() == bookId).findFirst().orElseThrow();
+                    listBooks.remove(find);
+                    System.out.println("Đã xóa sách thành công!");
+                }
+                case 3 -> {
+                    System.out.println("Nhập mã sách cần thay đổi: ");
+                    int bookId = x.nextInt();
+                    Book find = listBooks.stream().filter(p -> p.getId() == bookId).findFirst().orElseThrow();
+
+                    if(find != null) {
+                        System.out.println("Đã tìm thấy sách: " + find.getTitle()); 
+                        System.out.println("Mời nhập thông tin mới:");
+                        find.input(); 
+        
+                        System.out.println("Cập nhật thành công!");
+                    } else {
+                        System.out.println("Không tìm thấy sách có mã " + bookId);
+                    }
+                }
+                case 4 -> {
+                    System.out.println("Xuất thông tin danh sách ");
+                    listBooks.forEach(p -> p.output());
+                }
+                case 5 -> {
+                    List<Book> list5 = listBooks.stream()
+                            .filter(p -> p.getTitle().toLowerCase().contains("lập trình"))
+                            .toList();
+                    list5.forEach(Book::output);
+                }
+                case 6 -> {
+                    Book maxPriceBook = listBooks.stream()
+                            .max((b1, b2) -> Double.compare(b1.getPrice(), b2.getPrice()))
+                            .orElseThrow();
+                    System.out.println("Sách có giá cao nhất:");
+                    maxPriceBook.output();
+                }
+                case 7-> {
+                    System.out.print("Nhập tên tác giả cần tìm: ");
+                    x.nextLine(); // consume newline
+                    String authorName = x.nextLine();
+                    List<Book> authorBooks = listBooks.stream()
+                            .filter(p -> p.getAuthor().equalsIgnoreCase(authorName))
+                            .toList();
+                    authorBooks.forEach(Book::output);
+                }
+            }
+        } while (chon != 0);
+    }
+}
