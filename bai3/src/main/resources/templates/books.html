@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sách</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f6fa;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #2f3640;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #44bd32;
+            padding: 8px 14px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            background: white;
+            margin-top: 20px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #273c75;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f2f6;
+        }
+
+        .btn-edit {
+            background-color: #fbc531;
+            padding: 6px 10px;
+            border-radius: 4px;
+            color: black;
+        }
+
+        .btn-delete {
+            background-color: #e84118;
+            padding: 6px 10px;
+            border-radius: 4px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📚 Danh sách sách</h1>
+
+<a th:href="@{/books/add}">➕ Thêm sách mới</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tiêu đề</th>
+            <th>Tác giả</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}"></td>
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td>
+                <a class="btn-edit" th:href="@{/books/edit/{id}(id=${book.id})}">Sửa</a>
+                <a th:href="@{/books/delete/{id}(id=${book.id})}"
+                    onclick="return confirm('Bạn có chắc muốn xóa không?')">Xóa</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

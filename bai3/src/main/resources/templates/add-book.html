@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm sách mới</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            width: 350px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2f3640;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #44bd32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4cd137;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back a {
+            text-decoration: none;
+            color: #273c75;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>📘 Thêm sách mới</h1>
+
+    <form th:action="@{/books/add}" method="post" th:object="${book}">
+        <label for="title">Tiêu đề</label>
+        <input type="text" id="title" th:field="*{title}" required />
+
+        <label for="author">Tác giả</label>
+        <input type="text" id="author" th:field="*{author}" required />
+
+        <button type="submit">➕ Thêm</button>
+    </form>
+
+    <div class="back">
+        <a th:href="@{/home}">← Quay lại danh sách</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.example.bai2.Models;
+package com.example.bai3.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 
 public class Book {
-    private int id;
+    private Long  id;
     private String title;
     private String author;
 }
