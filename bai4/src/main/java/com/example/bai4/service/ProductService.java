@@ -18,10 +18,6 @@ import com.example.bai4.model.Product;
 public class ProductService {
     private List<Product> listProduct = new ArrayList<>();
 
-    public ProductService() {
-        listProduct.add(new Product(1, "iPhone 15", "iphone.jpg", 25000000L, null));
-    }
-
     // ================= GET ALL =================
     public List<Product> getAll() {
         System.out.println("GET ALL = " + listProduct.size());
