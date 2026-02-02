@@ -1,92 +1,67 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
     <title>Thêm sách mới</title>
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f5f6fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .form-container {
-            background: white;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            width: 350px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #2f3640;
-        }
-
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-top: 6px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            margin-top: 20px;
-            width: 100%;
-            padding: 10px;
-            background-color: #44bd32;
-            color: white;
+        .custom-card {
             border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
+            border-radius: 20px;
+            background: #ffffff;
+            transition: transform 0.3s ease;
         }
-
-        button:hover {
-            background-color: #4cd137;
+        .custom-card:hover {
+            transform: translateY(-5px);
         }
-
-        .back {
-            text-align: center;
-            margin-top: 15px;
+        .btn-gradient-success {
+            background: linear-gradient(135deg, #44bd32, #2ecc71);
+            border: none;
+            color: white;
+            font-weight: 600;
         }
-
-        .back a {
-            text-decoration: none;
-            color: #273c75;
+        .btn-gradient-success:hover {
+            background: linear-gradient(135deg, #2ecc71, #44bd32);
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
         }
     </style>
 </head>
 <body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 75vh; font-family: 'Inter', sans-serif;">
+        <div class="card custom-card shadow-lg p-5" style="width: 450px;">
+            <div class="text-center mb-4">
+                <span style="font-size: 3rem;">📚</span>
+                <h2 class="fw-bold text-dark mt-2">Thêm Sách Mới</h2>
+                <p class="text-muted small">Điền thông tin để làm phong phú thư viện</p>
+            </div>
 
-<div class="form-container">
-    <h1>📘 Thêm sách mới</h1>
+            <form th:action="@{/books/add}" method="post" th:object="${book}">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="Tên sách" required style="border-radius: 10px;">
+                    <label for="title">Tên tiêu đề sách</label>
+                </div>
 
-    <form th:action="@{/books/add}" method="post" th:object="${book}">
-        <label for="title">Tiêu đề</label>
-        <input type="text" id="title" th:field="*{title}" required />
+                <div class="form-floating mb-4">
+                    <input type="text" class="form-control" id="author" th:field="*{author}" placeholder="Tác giả" required style="border-radius: 10px;">
+                    <label for="author">Tên tác giả</label>
+                </div>
 
-        <label for="author">Tác giả</label>
-        <input type="text" id="author" th:field="*{author}" required />
+                <button type="submit" class="btn btn-gradient-success w-100 py-3 mb-3 shadow-sm" style="border-radius: 12px;">
+                    <i class="bi bi-plus-circle-fill me-2"></i> Xác nhận thêm
+                </button>
+            </form>
 
-        <button type="submit">➕ Thêm</button>
-    </form>
-
-    <div class="back">
-        <a th:href="@{/home}">← Quay lại danh sách</a>
+            <div class="text-center">
+                <a th:href="@{/books}" class="btn btn-link text-decoration-none text-muted">
+                    <i class="bi bi-arrow-left"></i> Quay lại danh sách
+                </a>
+            </div>
+        </div>
     </div>
 </div>
-
 </body>
 </html>

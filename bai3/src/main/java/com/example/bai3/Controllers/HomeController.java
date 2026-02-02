@@ -13,10 +13,10 @@ public class HomeController {
     @Autowired
     private BookService bookService;
     
-    @GetMapping("/home")
+    @GetMapping({"/home", "/"})
     public String Index(Model model) {
         model.addAttribute("books", bookService.getAllBooks());
-        return "index";
+        return "books";
     }
  
     
