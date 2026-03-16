@@ -2,68 +2,99 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>Quản lý học phần</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Quản lý học phần</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f4f6f9;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+    </style>
+
 </head>
 
 <body>
 
-<div class="container mt-4">
+    <div class="container mt-5">
 
-<h2>Quản lý học phần</h2>
+        <div class="table-card">
 
-<a class="btn btn-success mb-3"
-   th:href="@{/admin/courses/create}">
-Thêm học phần
-</a>
+            <div class="d-flex justify-content-between align-items-center mb-3">
 
-<table class="table table-bordered">
+                <h3 class="fw-bold">
+                    Quản lý học phần
+                </h3>
 
-<thead>
+                <a class="btn btn-success" th:href="@{/admin/courses/create}">
+                    + Thêm học phần
+                </a>
 
-<tr>
-<th>ID</th>
-<th>Tên học phần</th>
-<th>Số tín chỉ</th>
-<th>Giảng viên</th>
-<th>Thao tác</th>
-</tr>
+            </div>
 
-</thead>
+            <table class="table table-striped table-hover align-middle">
 
-<tbody>
+                <thead class="table-dark">
 
-<tr th:each="course : ${courses}">
+                    <tr>
+                        <th>ID</th>
+                        <th>Hình ảnh</th>
+                        <th>Tên học phần</th>
+                        <th>Tín chỉ</th>
+                        <th>Giảng viên</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
 
-<td th:text="${course.id}"></td>
+                </thead>
 
-<td th:text="${course.name}"></td>
+                <tbody>
 
-<td th:text="${course.credits}"></td>
+                    <tr th:each="course : ${courses}">
 
-<td th:text="${course.lecturer}"></td>
+                        <td th:text="${course.id}"></td>
 
-<td>
+                        <td>
+                            <img th:src="${course.image}"
+                                style="width:70px;height:50px;object-fit:cover;border-radius:6px">
+                        </td>
 
-<a class="btn btn-warning btn-sm"
-   th:href="@{/admin/courses/edit/{id}(id=${course.id})}">
-Sửa
-</a>
+                        <td th:text="${course.name}"></td>
 
-<a class="btn btn-danger btn-sm"
-   th:href="@{/admin/courses/delete/{id}(id=${course.id})}">
-Xóa
-</a>
+                        <td th:text="${course.credits}"></td>
 
-</td>
+                        <td th:text="${course.lecturer}"></td>
 
-</tr>
+                        <td class="text-center">
 
-</tbody>
+                            <a class="btn btn-warning btn-sm me-1"
+                                th:href="@{/admin/courses/edit/{id}(id=${course.id})}">
+                                Sửa
+                            </a>
 
-</table>
+                            <a class="btn btn-danger btn-sm" th:href="@{/admin/courses/delete/{id}(id=${course.id})}">
+                                Xóa
+                            </a>
 
-</div>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>  
+
+    </div>
 
 </body>
+
 </html>

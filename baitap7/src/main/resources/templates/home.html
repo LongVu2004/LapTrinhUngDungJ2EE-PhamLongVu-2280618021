@@ -10,23 +10,40 @@
 
     <div class="row">
         <div class="col-md-4 mb-4" th:each="course : ${courses.content}">
-            <div class="card shadow-sm h-100">
-                <img th:src="${course.image}" class="card-img-top" style="height:200px;object-fit:cover">
+    
+            <div class="card course-card">
+    
+                <img th:src="${course.image}" class="card-img-top course-img">
+    
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${course.name}">
+    
+                    <h5 class="course-title" th:text="${course.name}">
                     </h5>
-                    <p class="card-text">
-                        <strong>Số tín chỉ:</strong>
+    
+                    <p class="course-info">
+    
+                        🎓 <strong>Tín chỉ:</strong>
                         <span th:text="${course.credits}"></span>
+    
                         <br>
-                        <strong>Giảng viên:</strong>
+    
+                        👨‍🏫 <strong>Giảng viên:</strong>
                         <span th:text="${course.lecturer}"></span>
+    
                     </p>
+    
                     <form th:action="@{/enroll/{id}(id=${course.id})}" method="post">
-                        <button class="btn btn-success w-100">Đăng ký học phần</button>
+    
+                        <button class="btn btn-success w-100 mt-2">
+                            Đăng ký học phần
+                        </button>
+    
                     </form>
+    
                 </div>
+    
             </div>
+    
         </div>
     </div>
     <!-- PHÂN TRANG -->
