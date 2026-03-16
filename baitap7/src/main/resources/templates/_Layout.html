@@ -98,6 +98,19 @@
 
     <div class="container mt-4">
 
+        <form th:action="@{/search}" method="get">
+
+        <input type="text"
+            name="keyword"
+            class="form-control"
+            placeholder="Search course...">
+
+        <button class="btn btn-primary">
+        Search
+        </button>
+
+        </form>
+
         <div th:replace="${content}"></div>
 
     </div>
