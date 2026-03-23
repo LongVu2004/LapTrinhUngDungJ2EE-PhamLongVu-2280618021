@@ -5,62 +5,91 @@
       layout:decorate="~{layout}">
 
 <div layout:fragment="content">
-    <div class="row justify-content-center">
-        <div class="col-lg-8 col-xl-6">
-            <div class="card card-custom">
-                <div class="card-header bg-white border-0 pt-4 pb-0">
-                    <h3 class="text-center text-warning mb-0">
-                        <i class="bi bi-pencil-square me-2"></i>Edit Product
-                    </h3>
+
+    <!-- Back link -->
+    <a th:href="@{/products}"
+       style="display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:18px;transition:color 0.15s;"
+       onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">
+        <i class="bi bi-arrow-left"></i> Back to Products
+    </a>
+
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start;max-width:900px;">
+
+        <!-- Form card -->
+        <div class="sf-card" style="padding:28px;">
+            <div style="margin-bottom:22px;">
+                <p style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#d97706;margin-bottom:3px;">Inventory</p>
+                <h2 style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.3px;margin:0;">
+                    <i class="bi bi-pencil-square me-2" style="color:#d97706;"></i>Edit Product
+                </h2>
+            </div>
+
+            <!-- Giữ nguyên toàn bộ logic form gốc: action, th:object, method, th:field, th:each -->
+            <form th:action="@{/products/update/{id}(id=${product.id})}" th:object="${product}" method="post">
+                <input type="hidden" th:field="*{id}" />
+
+                <div style="margin-bottom:18px;">
+                    <label class="sf-label" for="name">Product Name</label>
+                    <input type="text" th:field="*{name}" class="sf-input" id="name">
                 </div>
-                <div class="card-body p-4">
-                    <form th:action="@{/products/update/{id}(id=${product.id})}" th:object="${product}" method="post">
-                        <input type="hidden" th:field="*{id}" />
 
-                        <div class="form-floating mb-3">
-                            <input type="text" th:field="*{name}" class="form-control" id="name">
-                            <label for="name">Product Name</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input type="text" th:field="*{image}" class="form-control" id="imageUrl">
-                            <label for="imageUrl">Image URL</label>
-                        </div>
-
-                        <!-- Preview -->
-                        <div class="mb-4 text-center bg-light p-3 rounded-4">
-                            <img id="preview" th:src="*{image}" th:if="*{image}"
-                                 class="img-preview" style="max-height: 260px;">
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input type="number" th:field="*{price}" class="form-control" id="price">
-                            <label for="price">Price (VND)</label>
-                        </div>
-
-                        <div class="form-floating mb-4">
-                            <select th:field="*{category.id}" class="form-select" id="category">
-                                <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
-                            </select>
-                            <label for="category">Category</label>
-                        </div>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a th:href="@{/products}" class="btn btn-outline-secondary px-4">Cancel</a>
-                            <button type="submit" class="btn btn-warning px-5 text-white">
-                                <i class="bi bi-arrow-clockwise me-2"></i>Update
-                            </button>
-                        </div>
-                    </form>
+                <div style="margin-bottom:18px;">
+                    <label class="sf-label" for="imageUrl">Image URL</label>
+                    <input type="text" th:field="*{image}" class="sf-input" id="imageUrl">
                 </div>
+
+                <!-- Giữ nguyên logic preview gốc -->
+                <div class="mb-4 text-center bg-light p-3 rounded-4" style="display:none;">
+                    <img id="preview" th:src="*{image}" th:if="*{image}"
+                         class="img-preview" style="max-height: 260px;">
+                </div>
+
+                <div style="margin-bottom:18px;">
+                    <label class="sf-label" for="price">Price (VND)</label>
+                    <input type="number" th:field="*{price}" class="sf-input" id="price">
+                </div>
+
+                <div style="margin-bottom:24px;">
+                    <label class="sf-label" for="category">Category</label>
+                    <select th:field="*{category.id}" class="sf-select" id="category">
+                        <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+                    </select>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;gap:10px;padding-top:18px;border-top:1px solid var(--border);">
+                    <a th:href="@{/products}" class="topbar-btn btn-ghost">Cancel</a>
+                    <button type="submit"
+                            style="display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:7px;font-size:13px;font-weight:600;background:#d97706;color:white;border:none;cursor:pointer;transition:background 0.15s;font-family:'DM Sans',sans-serif;"
+                            onmouseover="this.style.background='#b45309'" onmouseout="this.style.background='#d97706'">
+                        <i class="bi bi-arrow-clockwise"></i> Update
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Preview card -->
+        <div class="sf-card" style="padding:18px;position:sticky;top:76px;">
+            <p class="sf-label" style="margin-bottom:12px;">Image Preview</p>
+            <div style="background:#f9fafb;border-radius:9px;border:1.5px solid var(--border);height:220px;overflow:hidden;">
+                <!-- Giữ nguyên th:src="*{image}" gốc -->
+                <img id="previewImg" th:src="*{image}"
+                     style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div style="margin-top:12px;padding:10px 12px;background:#fefce8;border-radius:8px;border:1px solid #fde68a;">
+                <span style="font-size:12px;font-weight:500;color:#92400e;">
+                    <i class="bi bi-pencil me-1"></i> Đang chỉnh sửa:
+                    <strong th:text="${product.name}"></strong>
+                </span>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Giữ nguyên script gốc -->
 <script>
     document.getElementById('imageUrl').addEventListener('input', function() {
         document.getElementById('preview').src = this.value;
+        document.getElementById('previewImg').src = this.value;
     });
 </script>
 </html>

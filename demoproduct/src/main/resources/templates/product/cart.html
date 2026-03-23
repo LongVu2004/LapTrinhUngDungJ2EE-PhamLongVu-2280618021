@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+
+    <!-- Page heading -->
+    <div style="margin-bottom:22px;">
+        <p style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:3px;">Shopping</p>
+        <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.4px;margin:0;">
+            <i class="bi bi-cart3 me-2"></i>Giỏ Hàng Của Bạn
+        </h1>
+    </div>
+
+    <!-- Giữ nguyên logic th:if empty gốc -->
+    <div th:if="${#lists.isEmpty(cartItems)}" class="sf-card text-center" style="padding:64px 24px;">
+        <i class="bi bi-cart-x" style="font-size:3.5rem;color:var(--border);display:block;margin-bottom:14px;"></i>
+        <h4 style="font-weight:700;font-family:'Syne',sans-serif;color:var(--text);margin-bottom:6px;">Giỏ hàng của bạn đang trống!</h4>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:22px;">Hãy thêm sản phẩm vào giỏ để tiến hành đặt hàng.</p>
+        <a th:href="@{/products}" class="topbar-btn btn-accent">
+            <i class="bi bi-arrow-left"></i> Quay lại mua sắm
+        </a>
+    </div>
+
+    <!-- Giữ nguyên logic th:if non-empty gốc -->
+    <div th:if="${!#lists.isEmpty(cartItems)}">
+        <div class="sf-card" style="overflow:hidden;margin-bottom:16px;">
+            <div class="table-responsive">
+                <!-- Giữ nguyên toàn bộ table và th:each gốc -->
+                <table class="sf-table">
+                    <thead>
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Đơn giá</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-end" style="padding-right:20px;">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Giữ nguyên th:each, th:src, th:text gốc -->
+                        <tr th:each="item : ${cartItems}">
+                            <td>
+                                <img th:src="${item.image}"
+                                     style="width:52px;height:52px;object-fit:cover;border-radius:9px;border:1px solid var(--border);">
+                            </td>
+                            <td>
+                                <span style="font-weight:600;" th:text="${item.name}"></span>
+                            </td>
+                            <td>
+                                <span style="color:var(--muted);" th:text="${item.price} + ' đ'"></span>
+                            </td>
+                            <td class="text-center">
+                                <!-- Giữ nguyên th:text gốc -->
+                                <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:#eef2ff;color:var(--accent);border-radius:6px;font-weight:700;font-size:13px;"
+                                      th:text="${item.quantity}"></span>
+                            </td>
+                            <td class="text-end" style="padding-right:20px;">
+                                <!-- Giữ nguyên th:text tính tiền gốc -->
+                                <span style="font-weight:700;color:var(--text);"
+                                      th:text="${item.price * item.quantity} + ' đ'"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer: tổng tiền + actions -->
+        <div class="sf-card" style="padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+
+            <!-- Back link -->
+            <a th:href="@{/products}"
+               style="display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--muted);text-decoration:none;font-weight:500;transition:color 0.15s;"
+               onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">
+                <i class="bi bi-arrow-left"></i> Tiếp tục mua sắm
+            </a>
+
+            <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+                <!-- Tổng tiền: dùng Thymeleaf aggregate -->
+                <div style="text-align:right;">
+                    <span style="font-size:12.5px;color:var(--muted);display:block;margin-bottom:2px;">Tổng cộng</span>
+                    <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--accent);"
+                          th:text="${#aggregates.sum(cartItems.![price * quantity])} + ' đ'">
+                    </span>
+                </div>
+
+                <!-- Giữ nguyên form checkout gốc -->
+                <form th:action="@{/cart/checkout}" method="post" style="margin:0;">
+                    <button type="submit"
+                            style="display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:700;font-family:'Syne',sans-serif;background:var(--accent);color:white;border:none;cursor:pointer;box-shadow:0 3px 12px rgba(99,102,241,0.3);transition:all 0.16s;letter-spacing:0.3px;"
+                            onmouseover="this.style.background='var(--accent-dark)'"
+                            onmouseout="this.style.background='var(--accent)'">
+                        <i class="bi bi-credit-card"></i> THANH TOÁN ĐẶT HÀNG
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Giữ nguyên logic hiển thị lỗi gốc -->
+    <div th:if="${param.error}"
+         style="margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:13px 18px;display:flex;align-items:center;gap:9px;">
+        <i class="bi bi-exclamation-triangle-fill" style="color:#ef4444;"></i>
+        <span style="font-size:13.5px;color:#991b1b;font-weight:500;">
+            Có lỗi xảy ra: Không thể đặt hàng lúc này. Vui lòng thử lại!
+        </span>
+    </div>
+
+</div>
+</html>
